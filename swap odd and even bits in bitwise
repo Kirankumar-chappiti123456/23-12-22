@@ -1,0 +1,65 @@
+#include <stdio.h>
+unsigned int fun(unsigned int num)
+{
+    int even=num & 0xAAAAAAAA;
+    int odd=num & 0x55555555;
+    even>>=1;
+    odd<<=1;
+    return (even|odd);
+}
+int main()
+{
+    unsigned int num=23;
+    printf("%u ",fun(num));
+}
+
+
+
+using function pointer:
+#include <stdio.h>
+unsigned int fun(unsigned int num)
+{
+    int even=num & 0xAAAAAAAA;// 32 bit in binary
+    int odd=num & 0x55555555;// 32 bit in binary
+    even>>=1;
+    odd<<=1;
+    int k=even | odd;
+    printf("%d",k);
+}
+int main()
+{
+    unsigned int num=23;
+    int (*fptr)(int )=fun;
+    fptr(num);
+}
+
+
+using for loop:
+
+
+
+#include <stdio.h>
+#define N sizeof(int)*8
+int fun(unsigned int num)
+{
+    int even,odd;
+    for(int i=0;i<N;i+=2)
+    {
+        even=(num>>i)&1;
+        
+        odd=(num>>(i+1))&1;
+        
+        num=num-(even<<i)-(odd<<(i+1))+(even<<(i+1))+(odd<<i);
+    }
+    
+    return num;
+}
+int main()
+{
+   unsigned int num=23;
+    printf("%u",fun(num));
+}
+
+
+
+
